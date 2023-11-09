@@ -1,7 +1,7 @@
 package com.pessoto.bbcnews
 
 import android.app.Application
-import com.pessoto.bbcnews.data.remote.di.moduleRemote
+import com.pessoto.bbcnews.corearch.data.remote.di.moduleRemote
 import com.pessoto.bbcnews.feature.listheadlines.di.moduleListHeadlines
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin

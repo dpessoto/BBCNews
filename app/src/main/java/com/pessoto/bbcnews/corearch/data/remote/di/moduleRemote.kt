@@ -1,4 +1,4 @@
-package com.pessoto.bbcnews.data.remote.di
+package com.pessoto.bbcnews.corearch.data.remote.di
 
 import com.pessoto.bbcnews.BuildConfig
 import okhttp3.OkHttpClient
