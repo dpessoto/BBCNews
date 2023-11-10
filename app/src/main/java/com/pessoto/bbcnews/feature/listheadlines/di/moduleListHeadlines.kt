@@ -7,6 +7,8 @@ import com.pessoto.bbcnews.feature.listheadlines.data.repository.ListHeadlinesRe
 import com.pessoto.bbcnews.feature.listheadlines.data.source.remote.ListHeadlinesRemoteDataSource
 import com.pessoto.bbcnews.feature.listheadlines.data.source.remote.ListHeadlinesRemoteDataSourceImpl
 import com.pessoto.bbcnews.feature.listheadlines.domain.usecase.GetHeadLinesUseCase
+import com.pessoto.bbcnews.feature.listheadlines.presentation.viewmodel.ListHeadlinesViewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -23,4 +25,7 @@ val moduleListHeadlines = module {
 
     //domain
     factory { GetHeadLinesUseCase(repository = get()) }
+
+    //presentation
+    viewModel { ListHeadlinesViewModel(getHeadLinesUseCase = get()) }
 }
