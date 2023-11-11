@@ -2,7 +2,7 @@ package com.pessoto.bbcnews.feature.listheadlines.presentation.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.pessoto.bbcnews.feature.listheadlines.domain.usecase.GetHeadLinesUseCase
-import com.pessoto.bbcnews.feature.listheadlines.util.mockNews
+import com.pessoto.bbcnews.feature.listheadlines.util.mockNewsSorted
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,7 +27,7 @@ internal class ListHeadlinesViewModelTest {
     @Test
     fun `getHeadline should emit DataLoaded state on success`() = runBlocking {
         // Given
-        val mockNews = mockNews()
+        val mockNews = mockNewsSorted()
         coEvery { getHeadLinesUseCase.invoke() } returns flow { emit(mockNews) }
 
         val viewModel = ListHeadlinesViewModel(getHeadLinesUseCase, coroutineTestRule.testDispatcher)
@@ -36,7 +36,7 @@ internal class ListHeadlinesViewModelTest {
         viewModel.getHeadline()
 
         // Then
-        assertEquals(ListHeadlinesStateView.DataLoaded(mockNews), viewModel.stateView.value)
+        assertEquals(ListHeadlinesStateView.DataLoaded(mockNews.articles), viewModel.stateView.value)
     }
 
 

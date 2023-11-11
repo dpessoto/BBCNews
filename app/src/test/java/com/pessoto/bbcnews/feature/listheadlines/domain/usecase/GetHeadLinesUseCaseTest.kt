@@ -1,15 +1,15 @@
 package com.pessoto.bbcnews.feature.listheadlines.domain.usecase
 
-import app.cash.turbine.test
 import com.pessoto.bbcnews.feature.listheadlines.data.repository.ListHeadlinesRepository
 import com.pessoto.bbcnews.feature.listheadlines.domain.model.News
 import com.pessoto.bbcnews.feature.listheadlines.util.mockNews
+import com.pessoto.bbcnews.feature.listheadlines.util.mockNewsSorted
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.assertEquals
 import org.junit.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFails
 import kotlin.time.ExperimentalTime
 
@@ -21,20 +21,22 @@ internal class GetHeadLinesUseCaseTest {
     private val useCase = GetHeadLinesUseCase(repository)
 
     @Test
-    fun `getHeadLinesUseCase Should return News When repository is success`() = runBlocking {
-        // Given
-        val expectedResult = flow<News> { mockNews() }
-        every { repository.getHeadlines() } returns expectedResult
+    fun `getHeadLinesUseCase Should return News Sorted by date When repository is success`() = runBlocking {
+            // Given
+            val unsortedNews = mockNews()
+            val sortedNews = mockNewsSorted()
+            every { repository.getHeadlines() } returns flowOf(unsortedNews)
 
-        // When
-        val result = useCase.invoke()
+            // When
+            var news: News? = null
+            useCase.invoke().collect {
+                news = it
+            }
 
-        // Then
-        result.test {
-            assertEquals(expectedResult, result)
-            expectComplete()
+            // Then
+            assertEquals(sortedNews, news)
         }
-    }
+
 
     @Test
     fun `getHeadLinesUseCase Should throw throwable When repository is failure`() = runBlocking {

@@ -27,7 +27,7 @@ internal class ListHeadlinesViewModel(
                 .flowOn(dispatcher)
                 .onStart { _stateView.value = ListHeadlinesStateView.Loading }
                 .catch { _stateView.value = ListHeadlinesStateView.Error(it) }
-                .collect { _stateView.value = ListHeadlinesStateView.DataLoaded(it) }
+                .collect { _stateView.value = ListHeadlinesStateView.DataLoaded(it.articles) }
         }
     }
 }

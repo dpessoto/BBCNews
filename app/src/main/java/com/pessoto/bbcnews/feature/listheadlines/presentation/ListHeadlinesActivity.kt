@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.pessoto.bbcnews.corearch.presentation.extensions.gone
 import com.pessoto.bbcnews.corearch.presentation.extensions.visible
 import com.pessoto.bbcnews.databinding.ActivityListHeadlinesBinding
-import com.pessoto.bbcnews.feature.listheadlines.domain.model.News
+import com.pessoto.bbcnews.feature.listheadlines.domain.model.Article
 import com.pessoto.bbcnews.feature.listheadlines.presentation.adapter.ListHeadlinesAdapter
 import com.pessoto.bbcnews.feature.listheadlines.presentation.viewmodel.ListHeadlinesStateView
 import com.pessoto.bbcnews.feature.listheadlines.presentation.viewmodel.ListHeadlinesViewModel
@@ -59,11 +59,11 @@ class ListHeadlinesActivity : AppCompatActivity() {
         headlineProgressBar.visible()
     }
 
-    private fun stateDataLoaded(data: News) = with(binding) {
+    private fun stateDataLoaded(data: List<Article>) = with(binding) {
         headlineErrorButton.gone()
         headlineProgressBar.gone()
         headlineRecyclerView.visible()
-        adapter.submitList(data.articles)
+        adapter.submitList(data)
     }
 
     private fun stateError() = with(binding) {
