@@ -3,6 +3,7 @@ package com.pessoto.bbcnews.feature.listheadlines.presentation.adapter.viewholde
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.pessoto.bbcnews.corearch.presentation.extensions.loadImage
 import com.pessoto.bbcnews.databinding.ListheadlinesHeadlineItemBinding
 import com.pessoto.bbcnews.feature.listheadlines.domain.model.Article
 
@@ -13,6 +14,7 @@ internal class HeadlineViewHolder(
     fun bind(article: Article, onClickItem: (Article) -> Unit) {
         binding.root.setOnClickListener { onClickItem.invoke(article) }
         binding.headlineTextView.text = article.title
+        binding.headlineImage.loadImage(article.urlToImage)
     }
 
     companion object {
