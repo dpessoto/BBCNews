@@ -27,39 +27,59 @@ internal class ListHeadlinesViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val getHeadLinesUseCase = mockk<GetHeadLinesUseCase>()
+    private val resource = mockk<ResourceProvider>()
 
     @Test
     fun `getHeadline should emit DataLoaded state on success`() = runBlocking {
         // Given
-        val mockNews = mockNewsSorted()
-        coEvery { getHeadLinesUseCase.invoke() } returns flow { emit(mockNews) }
+        val mockArticles = mockSortedArticles()
+        coEvery { getHeadLinesUseCase.invoke() } returns flow { emit(mockArticles) }
 
-        val viewModel = ListHeadlinesViewModel(getHeadLinesUseCase, coroutineTestRule.testDispatcher)
+        val viewModel = ListHeadlinesViewModel(getHeadLinesUseCase,resource, coroutineTestRule.testDispatcher)
 
         // When
         viewModel.getHeadline()
 
         // Then
-        assertEquals(ListHeadlinesStateView.DataLoaded(mockNews.articles), viewModel.stateView.value)
+        assertEquals(ListHeadlinesStateView.DataLoaded(mockArticles), viewModel.stateView.value)
     }
 
+    @Test
+    fun `getHeadline should emit Error state on failure is EmptyArticleListException`() = runBlocking {
+        // Given
+        val mockException = EmptyArticleListException("Test exception")
+        coEvery { getHeadLinesUseCase.invoke() } returns flow { throw mockException }
+        every { resource.getString(R.string.update) } returns "Update"
+
+        val viewModel = ListHeadlinesViewModel(getHeadLinesUseCase,resource, coroutineTestRule.testDispatcher)
+
+        // When
+        viewModel.getHeadline()
+
+        // Then
+        assertEquals(ListHeadlinesStateView.Error(ListHeadlineError(
+            buttonDescription = "Update",
+            messageDescription = "Test exception"
+        )), viewModel.stateView.value)
+    }
 
     @Test
-    fun `getHeadline should emit Error state on failure`() = runBlocking {
+    fun `getHeadline should emit Error state on failure is Generic Error`() = runBlocking {
         // Given
         val mockException = Throwable("Test exception")
         coEvery { getHeadLinesUseCase.invoke() } returns flow { throw mockException }
+        every { resource.getString(R.string.try_again) } returns "Update"
+        every { resource.getString(R.string.generic_error) } returns "Test exception"
 
-        val viewModel = ListHeadlinesViewModel(getHeadLinesUseCase, coroutineTestRule.testDispatcher)
+        val viewModel = ListHeadlinesViewModel(getHeadLinesUseCase,resource, coroutineTestRule.testDispatcher)
 
         // When
         viewModel.getHeadline()
 
         // Then
-        val expectedErrorState = ListHeadlinesStateView.Error(mockException)
-        val actualErrorState = viewModel.stateView.value
-
-        assertTrue(actualErrorState is ListHeadlinesStateView.Error)
-        assertEquals(expectedErrorState.e.message, (actualErrorState as ListHeadlinesStateView.Error).e.message)
+        assertEquals(ListHeadlinesStateView.Error(ListHeadlineError(
+            buttonDescription = "Update",
+            messageDescription = "Test exception"
+        )), viewModel.stateView.value)
     }
 }
