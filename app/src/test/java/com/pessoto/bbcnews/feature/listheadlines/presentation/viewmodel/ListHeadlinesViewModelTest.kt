@@ -1,15 +1,19 @@
 package com.pessoto.bbcnews.feature.listheadlines.presentation.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.pessoto.bbcnews.R
+import com.pessoto.bbcnews.corearch.resources.ResourceProvider
+import com.pessoto.bbcnews.feature.listheadlines.domain.exception.EmptyArticleListException
 import com.pessoto.bbcnews.feature.listheadlines.domain.usecase.GetHeadLinesUseCase
-import com.pessoto.bbcnews.feature.listheadlines.util.mockNewsSorted
+import com.pessoto.bbcnews.feature.listheadlines.presentation.model.ListHeadlineError
+import com.pessoto.bbcnews.feature.listheadlines.util.mockSortedArticles
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 

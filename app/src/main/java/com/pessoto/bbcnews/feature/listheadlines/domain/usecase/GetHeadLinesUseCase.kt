@@ -1,7 +1,7 @@
 package com.pessoto.bbcnews.feature.listheadlines.domain.usecase
 
 import com.pessoto.bbcnews.feature.listheadlines.data.repository.ListHeadlinesRepository
-import com.pessoto.bbcnews.feature.listheadlines.domain.model.News
+import com.pessoto.bbcnews.feature.listheadlines.domain.model.Article
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.text.SimpleDateFormat
@@ -17,14 +17,10 @@ internal class GetHeadLinesUseCase(
     )
 ) {
 
-    operator fun invoke(): Flow<News> {
-        return repository.getHeadlines().map { news ->
-            val sortedArticles = news.articles.sortedByDescending { article ->
-                val date = dateFormat.parse(article.publishedAt)
-                date
-            }
-
-            News(news.status, news.totalResults, sortedArticles)
+    operator fun invoke(): Flow<List<Article>> = repository.getHeadlines().map {
+        it.sortedByDescending { article ->
+            val date = dateFormat.parse(article.publishedAt)
+            date
         }
     }
 }

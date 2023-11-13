@@ -1,9 +1,9 @@
 package com.pessoto.bbcnews.feature.listheadlines.domain.usecase
 
 import com.pessoto.bbcnews.feature.listheadlines.data.repository.ListHeadlinesRepository
-import com.pessoto.bbcnews.feature.listheadlines.domain.model.News
-import com.pessoto.bbcnews.feature.listheadlines.util.mockNews
-import com.pessoto.bbcnews.feature.listheadlines.util.mockNewsSorted
+import com.pessoto.bbcnews.feature.listheadlines.domain.model.Article
+import com.pessoto.bbcnews.feature.listheadlines.util.mockSortedArticles
+import com.pessoto.bbcnews.feature.listheadlines.util.mockUnsortedArticles
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -23,18 +23,18 @@ internal class GetHeadLinesUseCaseTest {
     @Test
     fun `getHeadLinesUseCase Should return News Sorted by date When repository is success`() = runBlocking {
             // Given
-            val unsortedNews = mockNews()
-            val sortedNews = mockNewsSorted()
-            every { repository.getHeadlines() } returns flowOf(unsortedNews)
+            val unsortedArticles = mockUnsortedArticles()
+            val sortedNews = mockSortedArticles()
+            every { repository.getHeadlines() } returns flowOf(unsortedArticles)
 
             // When
-            var news: News? = null
+            var article: List<Article>? = null
             useCase.invoke().collect {
-                news = it
+                article = it
             }
 
             // Then
-            assertEquals(sortedNews, news)
+            assertEquals(sortedNews, article)
         }
 
 

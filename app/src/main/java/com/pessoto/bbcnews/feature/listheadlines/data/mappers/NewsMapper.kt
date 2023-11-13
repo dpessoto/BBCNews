@@ -16,8 +16,8 @@ internal class NewsMapper : Mapper<NewsResponse, News> {
         )
     }
 
-    private fun mapArticles(list: List<ArticleResponse>): List<Article> {
-        return list.map { article ->
+    private fun mapArticles(list: List<ArticleResponse>?): List<Article>? {
+        return list?.map { article ->
             Article(
                 source = Source(id = article.source.id, name = article.source.name),
                 author = article.author,

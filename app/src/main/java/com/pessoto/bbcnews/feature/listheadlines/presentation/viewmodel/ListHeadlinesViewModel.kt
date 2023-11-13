@@ -4,7 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pessoto.bbcnews.R
+import com.pessoto.bbcnews.corearch.resources.ResourceProvider
+import com.pessoto.bbcnews.feature.listheadlines.domain.exception.EmptyArticleListException
 import com.pessoto.bbcnews.feature.listheadlines.domain.usecase.GetHeadLinesUseCase
+import com.pessoto.bbcnews.feature.listheadlines.presentation.model.ListHeadlineError
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
@@ -14,6 +18,7 @@ import kotlinx.coroutines.launch
 
 internal class ListHeadlinesViewModel(
     private val getHeadLinesUseCase: GetHeadLinesUseCase,
+    private val resourceProvider: ResourceProvider,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
@@ -26,8 +31,28 @@ internal class ListHeadlinesViewModel(
             getHeadLinesUseCase.invoke()
                 .flowOn(dispatcher)
                 .onStart { _stateView.value = ListHeadlinesStateView.Loading }
-                .catch { _stateView.value = ListHeadlinesStateView.Error(it) }
-                .collect { _stateView.value = ListHeadlinesStateView.DataLoaded(it.articles) }
+                .catch { handleError(it) }
+                .collect { articles ->
+                    _stateView.value = ListHeadlinesStateView.DataLoaded(articles)
+                }
+        }
+    }
+
+    private fun handleError(it: Throwable) {
+        _stateView.value = when (it) {
+            is EmptyArticleListException -> ListHeadlinesStateView.Error(
+                ListHeadlineError(
+                    buttonDescription = resourceProvider.getString(
+                        R.string.update
+                    ), messageDescription = it.message.orEmpty()
+                )
+            )
+            else -> ListHeadlinesStateView.Error(
+                ListHeadlineError(
+                    buttonDescription = resourceProvider.getString(R.string.try_again),
+                    messageDescription = resourceProvider.getString(R.string.generic_error)
+                )
+            )
         }
     }
 }

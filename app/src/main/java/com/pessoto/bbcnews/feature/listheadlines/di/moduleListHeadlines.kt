@@ -19,7 +19,8 @@ val moduleListHeadlines = module {
     factory<ListHeadlinesRepository> {
         ListHeadlinesRepositoryImpl(
             remoteDataSource = get(),
-            mapper = NewsMapper()
+            mapper = NewsMapper(),
+            resourceProvider = get()
         )
     }
 
@@ -27,5 +28,5 @@ val moduleListHeadlines = module {
     factory { GetHeadLinesUseCase(repository = get()) }
 
     //presentation
-    viewModel { ListHeadlinesViewModel(getHeadLinesUseCase = get()) }
+    viewModel { ListHeadlinesViewModel(getHeadLinesUseCase = get(), resourceProvider = get()) }
 }

@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class NewsResponse(
     @SerialName("status")
-    val status: String,
+    val status: String? = null,
     @SerialName("totalResults")
-    val totalResults: Int,
+    val totalResults: Int? = null,
     @SerialName("articles")
-    val articles: List<ArticleResponse>
+    val articles: List<ArticleResponse>? = null
 )
