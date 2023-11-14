@@ -14,8 +14,8 @@ internal class ArticleViewModel(private val resourceProvider: ResourceProvider) 
         get() = _stateView
 
     fun setArticle(article: Article?) {
-        article?.let {
-            _stateView.value = ArticleStateView.DataLoaded(it)
+        _stateView.value = article?.let {
+            ArticleStateView.DataLoaded(it)
         } ?: ArticleStateView.Error(resourceProvider.getString(R.string.no_data))
     }
 }

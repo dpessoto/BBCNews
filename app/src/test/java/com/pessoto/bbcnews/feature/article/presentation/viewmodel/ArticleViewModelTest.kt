@@ -1,6 +1,5 @@
 package com.pessoto.bbcnews.feature.article.presentation.viewmodel
 
-import org.junit.Assert.assertEquals
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.pessoto.bbcnews.R
 import com.pessoto.bbcnews.corearch.resources.ResourceProvider
@@ -9,8 +8,8 @@ import com.pessoto.bbcnews.feature.listheadlines.util.mockSortedArticles
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
@@ -39,7 +38,6 @@ internal class ArticleViewModelTest {
         assertEquals(ArticleStateView.DataLoaded(article), viewModel.stateView.value)
     }
 
-    @Ignore("fixme")
     @Test
     fun `setArticle Should emit Error state When article is null`() {
         // Given
@@ -51,7 +49,7 @@ internal class ArticleViewModelTest {
 
         // Then
         val state = viewModel.stateView.value
-//        assertTrue(state is ArticleStateView.Error)
-//        assertEquals(ArticleStateView.Error("error"), viewModel.stateView.value)
+        assertTrue(state is ArticleStateView.Error)
+        assertEquals(ArticleStateView.Error("error"), viewModel.stateView.value)
     }
 }
