@@ -8,4 +8,5 @@ internal sealed class ListHeadlinesStateView {
     data object Loading : ListHeadlinesStateView()
     data class DataLoaded(val data: List<Article>) : ListHeadlinesStateView()
     data class Error(val error: ListHeadlineError) : ListHeadlinesStateView()
+    data class GoToArticle(val article: Article) : ListHeadlinesStateView()
 }

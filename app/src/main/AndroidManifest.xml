@@ -15,7 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BBCNews"
         tools:targetApi="31">
-
         <activity
             android:name=".feature.listheadlines.presentation.ListHeadlinesActivity"
             android:configChanges="orientation|screenSize"
@@ -26,6 +25,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".feature.article.presentation.ArticleActivity"
+            android:configChanges="orientation|screenSize"
+            android:exported="false" />
     </application>
 
 </manifest>

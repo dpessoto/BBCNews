@@ -22,12 +22,14 @@
         android:id="@+id/headlineErrorButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Try Again"
+        android:layout_marginTop="8dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headlineErrorTextView"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="Try Again"
         tools:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -43,4 +45,20 @@
         tools:itemCount="6"
         tools:listitem="@layout/listheadlines_headline_item"
         tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/headlineErrorTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="32dp"
+        android:textAlignment="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Error" />
 </androidx.constraintlayout.widget.ConstraintLayout>

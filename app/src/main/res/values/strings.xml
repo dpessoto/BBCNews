@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">BBC News</string>
+    <string name="empty_articles">No articles available at this time</string>
+    <string name="try_again">Try Again</string>
+    <string name="update">Update</string>
+    <string name="generic_error">Oops, something happened :)</string>
+    <string name="no_data">Oops, no data :(</string>
 </resources>

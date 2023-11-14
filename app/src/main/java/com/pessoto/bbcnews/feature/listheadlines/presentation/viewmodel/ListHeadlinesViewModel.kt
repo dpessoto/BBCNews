@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.pessoto.bbcnews.R
 import com.pessoto.bbcnews.corearch.resources.ResourceProvider
 import com.pessoto.bbcnews.feature.listheadlines.domain.exception.EmptyArticleListException
+import com.pessoto.bbcnews.feature.listheadlines.domain.model.Article
 import com.pessoto.bbcnews.feature.listheadlines.domain.usecase.GetHeadLinesUseCase
 import com.pessoto.bbcnews.feature.listheadlines.presentation.model.ListHeadlineError
 import kotlinx.coroutines.CoroutineDispatcher
@@ -54,5 +55,9 @@ internal class ListHeadlinesViewModel(
                 )
             )
         }
+    }
+
+    fun handleClickItem(article: Article) {
+        _stateView.value = ListHeadlinesStateView.GoToArticle(article)
     }
 }

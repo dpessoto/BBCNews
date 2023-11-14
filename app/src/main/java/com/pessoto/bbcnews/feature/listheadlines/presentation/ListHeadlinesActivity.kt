@@ -1,10 +1,13 @@
 package com.pessoto.bbcnews.feature.listheadlines.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.pessoto.bbcnews.corearch.presentation.extensions.gone
 import com.pessoto.bbcnews.corearch.presentation.extensions.visible
 import com.pessoto.bbcnews.databinding.ActivityListHeadlinesBinding
+import com.pessoto.bbcnews.feature.article.presentation.ARTICLE_EXTRA
+import com.pessoto.bbcnews.feature.article.presentation.ArticleActivity
 import com.pessoto.bbcnews.feature.listheadlines.domain.model.Article
 import com.pessoto.bbcnews.feature.listheadlines.presentation.adapter.ListHeadlinesAdapter
 import com.pessoto.bbcnews.feature.listheadlines.presentation.model.ListHeadlineError
@@ -17,9 +20,7 @@ class ListHeadlinesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityListHeadlinesBinding
     private val viewModel: ListHeadlinesViewModel by viewModel()
     private val adapter by lazy {
-        ListHeadlinesAdapter {
-            //TODO
-        }
+        ListHeadlinesAdapter (viewModel::handleClickItem)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,17 +30,18 @@ class ListHeadlinesActivity : AppCompatActivity() {
 
         setupRecyclerView()
         setupClick()
-        setupViewModel()
+        setupObserve()
 
         viewModel.getHeadline()
     }
 
-    private fun setupViewModel() {
+    private fun setupObserve() {
         viewModel.stateView.observe(this) { stateView ->
             when (stateView) {
                 is ListHeadlinesStateView.Loading -> stateLoading()
                 is ListHeadlinesStateView.DataLoaded -> stateDataLoaded(stateView.data)
                 is ListHeadlinesStateView.Error -> stateError(stateView.error)
+                is ListHeadlinesStateView.GoToArticle -> goToArticle(stateView)
             }
         }
     }
@@ -76,6 +78,12 @@ class ListHeadlinesActivity : AppCompatActivity() {
         headlineErrorTextView.visible()
         headlineErrorTextView.text = error.messageDescription
         headlineErrorButton.text = error.buttonDescription
+    }
+
+    private fun goToArticle(stateView: ListHeadlinesStateView.GoToArticle) {
+        val intent = Intent(this, ArticleActivity::class.java)
+        intent.putExtra(ARTICLE_EXTRA, stateView.article)
+        startActivity(intent)
     }
 
     override fun onDestroy() {

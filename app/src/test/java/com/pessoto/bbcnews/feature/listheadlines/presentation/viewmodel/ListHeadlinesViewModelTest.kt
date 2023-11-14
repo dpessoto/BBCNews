@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.pessoto.bbcnews.R
 import com.pessoto.bbcnews.corearch.resources.ResourceProvider
 import com.pessoto.bbcnews.feature.listheadlines.domain.exception.EmptyArticleListException
+import com.pessoto.bbcnews.feature.listheadlines.domain.model.Article
 import com.pessoto.bbcnews.feature.listheadlines.domain.usecase.GetHeadLinesUseCase
 import com.pessoto.bbcnews.feature.listheadlines.presentation.model.ListHeadlineError
 import com.pessoto.bbcnews.feature.listheadlines.util.mockSortedArticles
@@ -81,5 +82,18 @@ internal class ListHeadlinesViewModelTest {
             buttonDescription = "Update",
             messageDescription = "Test exception"
         )), viewModel.stateView.value)
+    }
+
+    @Test
+    fun `handleClickItem should set GoToArticle state`() {
+        // Given
+        val mockArticle = mockk<Article>()
+        val viewModel = ListHeadlinesViewModel(getHeadLinesUseCase,resource, coroutineTestRule.testDispatcher)
+
+        // When
+        viewModel.handleClickItem(mockArticle)
+
+        // Then
+        assertEquals(ListHeadlinesStateView.GoToArticle(mockArticle), viewModel.stateView.value)
     }
 }
